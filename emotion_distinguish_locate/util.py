@@ -47,5 +47,11 @@ def unify_image(plate_image):
     PLATE_STD_WIDTH = 48
     # 完成resize
     uniformed_image = cv.resize(plate_image, (PLATE_STD_WIDTH, PLATE_STD_HEIGHT))
-    return uniformed_image
+    return uniformed_image.ravel()
 
+
+# 标准化
+# 参数：特征矩阵：data
+# 返回值：执行标准化后的data
+def normalize_data(data):
+    return (data - data.mean()) // data.max()
