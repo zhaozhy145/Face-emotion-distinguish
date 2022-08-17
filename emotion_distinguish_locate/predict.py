@@ -2,7 +2,7 @@ import cv2 as cv
 import util
 import joblib
 predict_image = []
-MODEL_PATH = 'model/mlp_distinguish.m'
+MODEL_PATH = 'model/svm_distinguish.m'
 image = cv.imread('../Data/t010b53788c91b97894.jpg')
 image = util.preprocess_read_image(image)
 image = util.unify_image(image)
