@@ -1,5 +1,14 @@
+import cv2 as cv
 import util
-import cnn_emotion_distinguish
-TEST_DIR_PATH = '../Data/fer2013_data_strength/test'
-test_data, test_labels = util.read_images_list(TEST_DIR_PATH)
-cnn_emotion_distinguish.T(test_data, test_labels)
+import joblib
+predict_image = []
+MODEL_PATH = 'model/mlp_distinguish.m'
+image = cv.imread('../Data/t010b53788c91b97894.jpg')
+image = util.preprocess_read_image(image)
+image = util.unify_image(image)
+image = util.normalize_data(image)
+predict_image.append(image)
+
+model = joblib.load(MODEL_PATH)
+predict = model.predict(predict_image)
+print(predict)
