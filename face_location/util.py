@@ -32,10 +32,11 @@ def cut_face_from_image(initial_image, faces):
     return image_face
 
 
-if __name__ == '__main__':
+# 表情信息标注
+# 参数：使用的模型：model，原图片：image
+# 返回值：标注后的图片：image
+def emotion_sign(model, image):
     predict_image = []
-    MODEL_PATH = '../emotion_distinguish_locate/model/mlp_distinguish.m'
-    image = cv.imread(IMAGE_PATH)
     faces = get_face(image)
     image_face = cut_face_from_image(image, faces)
     for i in image_face:
@@ -44,13 +45,9 @@ if __name__ == '__main__':
         image_p = emotion_distinguish_locate.util.normalize_data(image_p)
         predict_image.append(image_p)
 
-    model = joblib.load(MODEL_PATH)
     predict = model.predict(predict_image)
     for i in range(len(predict)):
         cv.putText(image, LABEL_DICT[predict[i]], (faces[i][0], faces[i][1]), fontFace=0, color=[0, 0, 255], thickness=1,
                    fontScale=1)
 
-    cv.imshow('test', image)
-    cv.waitKey()
-    cv.destroyAllWindows()
-    print(predict)
+    return image
