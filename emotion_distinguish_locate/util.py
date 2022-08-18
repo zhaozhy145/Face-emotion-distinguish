@@ -20,7 +20,7 @@ def read_images_list(image_dir_path):
             for subitem in os.listdir(item_path):  # 获取特征下的文件目录（图片名称）
                 subitem_path = os.path.join(item_path, subitem)  # 生成通向图片的文件路径
                 gray_image = cv.imread(subitem_path, cv.IMREAD_GRAYSCALE)  # 读入灰度图
-                data.append(gray_image.ravel())  # 将图片展平添加到图片数据集
+                data.append(gray_image)  # 将图片展平添加到图片数据集
                 labels.append(LABEL_DICT[item])  # 将标签添加到标签集
 
     return np.array(data), np.array(labels)
@@ -47,7 +47,7 @@ def unify_image(plate_image):
     PLATE_STD_WIDTH = 48
     # 完成resize
     uniformed_image = cv.resize(plate_image, (PLATE_STD_WIDTH, PLATE_STD_HEIGHT))
-    return uniformed_image.ravel()
+    return uniformed_image
 
 
 # 标准化
