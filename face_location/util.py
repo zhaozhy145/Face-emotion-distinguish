@@ -47,7 +47,8 @@ def emotion_sign(model, image):
 
     predict = model.predict(predict_image)
     for i in range(len(predict)):
-        cv.putText(image, LABEL_DICT[predict[i]], (faces[i][0], faces[i][1]), fontFace=0, color=[0, 0, 255], thickness=1,
+        cv.putText(image, LABEL_DICT[predict[i]], (faces[i][0], faces[i][1]), fontFace=0, color=[0, 0, 255],
+                   thickness=1,
                    fontScale=1)
 
     return image
