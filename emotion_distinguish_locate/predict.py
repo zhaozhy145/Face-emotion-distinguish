@@ -3,13 +3,17 @@ import util
 import numpy as np
 import joblib
 import tensorflow as tf
+wrong_num = {6: 4, 5: 2, 4: 6, 3: 3, 2: 5, 1: 0, 0: 1}
 predict_labels = []
-model = tf.keras.models.load_model('model/cnn_model2')
-test_data, test_labels = util.read_images_list('../Data/fer2013_data_strength/test')
+model = tf.keras.models.load_model('model/cnn_model9')
+test_data, test_labels = util.read_images_list('../dataset/test')
+test_data = test_data / 255.0
 test_data = tf.constant(test_data)
-test_labels = tf.constant(test_labels)
+print(test_data.shape)
 predict = model.predict(test_data)
 for i in predict:
-    predict_labels.append(np.argmax(i))
+    predict_labels.append(wrong_num[np.argmax(i)])
+for i in range(len(predict_labels)):
+    print(predict_labels[i], test_labels[i])
 errors = np.count_nonzero(predict_labels - test_labels)
-print(errors / len(predict_labels))
+print(1 - errors / len(predict_labels))

@@ -1,14 +1,14 @@
 import os
 import pathlib
-
+from keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout
 import joblib
 import tensorflow as tf
 
 MODEL_PATH = 'saves/cnn_distinguish.m'
 
 print('开始读取图片路径')
-train_root_dir = '../Data/fer2013_data_strength/train'
-test_root_dir = '../Data/fer2013_data_strength/test'
+train_root_dir = '../dataset/train'
+test_root_dir = '../dataset/test'
 root_dir_path = pathlib.Path(train_root_dir)
 
 all_image_filename = [str(jpg_path) for jpg_path in root_dir_path.glob('**/*.jpg')]
@@ -39,39 +39,35 @@ dataset = tf.data.Dataset.from_tensor_slices((tf_feature_filenames, tf_labels))
 dataset = dataset.map(map_func=get_image_by_filename, num_parallel_calls=AUTOTUNE)
 
 print('生成cnn网络，完成训练:')
-num_epochs = 40  # 训练次数
-batch_size = 256  # 训练集分成的每批含有数量
-learning_rate = 0.001  # 学习率
+num_epochs = 10  # 训练次数
+batch_size = 128  # 训练集分成的每批含有数量
+learning_rate = 0.01  # 学习率
 
 print('预处置')
 dataset = dataset.shuffle(buffer_size=200000)
 dataset = dataset.batch(batch_size=batch_size)
 dataset = dataset.prefetch(AUTOTUNE)
 
-model = tf.keras.models.Sequential()
-# 第一段
-# 第一卷积层，64个大小为5×5的卷积核，步长1，激活函数relu，卷积模式same，输入张量的大小
-model.add(tf.keras.layers.Conv2D(64, kernel_size=(5, 5), strides=(1, 1), activation='relu', padding='same', input_shape=(48, 48, 1)))
-model.add(tf.keras.layers.MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))  # 第一池化层，池化核大小为2×2，步长2
-model.add(tf.keras.layers.BatchNormalization())
-model.add(tf.keras.layers.Dropout(0.4))  # 随机丢弃40%的网络连接，防止过拟合
-# 第二段
-model.add(tf.keras.layers.Conv2D(128, kernel_size=(5, 5), strides=(1, 1), activation='relu', padding='same'))
-model.add(tf.keras.layers.MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
-model.add(tf.keras.layers.BatchNormalization())
-model.add(tf.keras.layers.Dropout(0.4))
-# 第三段
-model.add(tf.keras.layers.Conv2D(256, kernel_size=(5, 5), strides=(1, 1), activation='relu', padding='same'))
-model.add(tf.keras.layers.MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
+model = tf.keras.Sequential([
+    Conv2D(32, (1, 1), strides=(1, 1), input_shape=(48, 48, 1), padding='same', activation='relu',
+           kernel_initializer='uniform'),
+    Conv2D(32, (5, 5), strides=(1, 1), padding='same', activation='relu', kernel_initializer='uniform'),
+    MaxPooling2D(pool_size=(2, 2)),
 
-model.add(tf.keras.layers.Flatten())  # 过渡层
-model.add(tf.keras.layers.Dropout(0.3))
-model.add(tf.keras.layers.Dense(2048, activation='relu'))  # 全连接层
-model.add(tf.keras.layers.Dropout(0.4))
-model.add(tf.keras.layers.Dense(1024, activation='relu'))
-model.add(tf.keras.layers.Dropout(0.4))
-model.add(tf.keras.layers.Dense(512, activation='relu'))
-model.add(tf.keras.layers.Dense(5, activation='softmax'))  # 分类输出层
+    Conv2D(32, (3, 3), strides=(1, 1), padding='same', activation='relu', kernel_initializer='uniform'),
+    MaxPooling2D(pool_size=(2, 2)),
+
+    Conv2D(64, (5, 5), strides=(1, 1), padding='same', activation='relu', kernel_initializer='uniform'),
+    MaxPooling2D(pool_size=(2, 2)),
+
+    Dense(2048, activation='relu'),
+    Dropout(0.2),
+
+    Dense(1024, activation='relu'),
+    Dropout(0.2),
+
+    Dense(7, activation='softmax'),
+])
 model.summary()
 model.build()
 model.compile(
@@ -85,4 +81,4 @@ model.fit(dataset, epochs=num_epochs)
 几次运行结果：
 loss: 0.3049 - sparse_categorical_crossentropy: 0.3049
 '''
-model.save('model/cnn_model_5_3')
+model.save('model/cnn_model13')

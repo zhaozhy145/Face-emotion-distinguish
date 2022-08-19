@@ -19,7 +19,7 @@ def read_images_list(image_dir_path):
         if os.path.isdir(item_path):  # 判断是否为路径
             for subitem in os.listdir(item_path):  # 获取特征下的文件目录（图片名称）
                 subitem_path = os.path.join(item_path, subitem)  # 生成通向图片的文件路径
-                gray_image = cv.imread(subitem_path, cv.IMREAD_GRAYSCALE)  # 读入灰度图
+                gray_image = cv.imread(subitem_path, cv.COLOR_BGR2GRAY)  # 读入灰度图
                 data.append(gray_image)  # 将图片展平添加到图片数据集
                 labels.append(LABEL_DICT[item])  # 将标签添加到标签集
 
@@ -54,4 +54,4 @@ def unify_image(plate_image):
 # 参数：特征矩阵：data
 # 返回值：执行标准化后的data
 def normalize_data(data):
-    return (data - data.mean()) // data.max()
+    return data / 255.0

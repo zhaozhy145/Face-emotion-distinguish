@@ -7,8 +7,8 @@ import tensorflow as tf
 MODEL_PATH = 'saves/cnn_distinguish.m'
 
 print('开始读取图片路径')
-train_root_dir = '../Data/fer2013_data_strength/train'
-test_root_dir = '../Data/fer2013_data_strength/test'
+train_root_dir = '../dataset/train'
+test_root_dir = '../dataset/test'
 root_dir_path = pathlib.Path(train_root_dir)
 
 all_image_filename = [str(jpg_path) for jpg_path in root_dir_path.glob('**/*.jpg')]
@@ -39,8 +39,8 @@ dataset = tf.data.Dataset.from_tensor_slices((tf_feature_filenames, tf_labels))
 dataset = dataset.map(map_func=get_image_by_filename, num_parallel_calls=AUTOTUNE)
 
 print('生成cnn网络，完成训练:')
-num_epochs = 40  # 训练次数
-batch_size = 256  # 训练集分成的每批含有数量
+num_epochs = 10  # 训练次数
+batch_size = 128  # 训练集分成的每批含有数量
 learning_rate = 0.001  # 学习率
 
 print('预处置')
@@ -71,7 +71,7 @@ model.add(tf.keras.layers.Dropout(0.4))
 model.add(tf.keras.layers.Dense(1024, activation='relu'))
 model.add(tf.keras.layers.Dropout(0.4))
 model.add(tf.keras.layers.Dense(512, activation='relu'))
-model.add(tf.keras.layers.Dense(5, activation='softmax'))  # 分类输出层
+model.add(tf.keras.layers.Dense(7, activation='softmax'))  # 分类输出层
 model.summary()
 model.build()
 model.compile(
@@ -85,4 +85,4 @@ model.fit(dataset, epochs=num_epochs)
 几次运行结果：
 loss: 0.3049 - sparse_categorical_crossentropy: 0.3049
 '''
-model.save('model/cnn_model_5_3')
+model.save('model/cnn_model9')
