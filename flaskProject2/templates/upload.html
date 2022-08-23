@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>防脱发组 多面部情绪识别系统</title>
+    <style>
+        .input_out{
+            height: 54px;
+            width:100px;
+            margin-top: 41px;
+            background-color: #6b370c;
+            border-width: 0px;
+            font-size: 20px;
+            color: white;
+            margin-left: -5px;
+            border-radius: 10px;
+        }
+        .input_move{
+            height: 54px;
+            width:100px;
+            margin-top: 41px;
+            background-color: #6b370c;
+            border-width: 0px;
+            font-size: 20px;
+            color: white;
+            margin-left: -5px;
+            /*圆角*/
+            /*圆角*/
+            /*圆角*/
+            /*圆角*/
+            border-radius: 10px;
+        }
+        .choose_file{
+            height: 54px;
+            width:100px;
+            margin-top: 41px;
+            {#background-color: #6b370c;#}
+            border-width: 0px;
+            font-size: 20px;
+            color: white;
+            margin-left: -5px;
+            /*圆角*/
+            /*圆角*/
+            /*圆角*/
+            /*圆角*/
+            border-radius: 10px;
+        }
+        .ori_div{
+            position: relative;
+            top: 30px;
+            left: 30px;
+        }
+    </style>
+</head>
+<body background="static/images/pointer1.jpg">
+{#    <select οnchange="window.open(this.options[this.selectedIndex].value)" name="select">#}
+{#         <option value="127.0.0.1:8987" selected="selected">163 </option>#}
+{#         <option value="https://www.sina.com">sina </option>#}
+{#         <option value="https://www.tom.com">tom </option>#}
+{#    </select>#}
+    <div class="ori_div">
+        <h1 style="left: 100px;top:200px">请选择文件并点击上传</h1>
+        <form action="" enctype='multipart/form-data' method='POST'>
+            <input type="file" name="file" style="margin-top:20px;height:auto" class="choose_file"/>
+            <br>
+            <input type="submit" value="上传" class="input_out" onmousemove="this.className='input_move'" onmouseout="this.className='input_out'" style="margin-top:15px;"/>
+        </form>
+    </div>
+
+
+</body>
+</html>

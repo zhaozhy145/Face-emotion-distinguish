@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>防脱发组 多面部情绪识别系统</title>
+    <style>
+        img{
+            width: auto;
+            height: 400px;
+            position: relative;
+            top: 100px;
+            left: 100px;
+        }
+    </style>
+        <style>
+        .input_out{
+            height: 54px;
+            width:100px;
+            margin-top: 41px;
+            background-color: #6b370c;
+            border-width: 0px;
+            font-size: 20px;
+            color: white;
+            margin-left: -5px;
+            /*圆角*/
+            /*圆角*/
+            /*圆角*/
+            /*圆角*/
+            border-radius: 10px;
+        }
+        .input_move{
+            height: 54px;
+            width:100px;
+            margin-top: 41px;
+            background-color: #6b370c;
+            border-width: 0px;
+            font-size: 20px;
+            color: white;
+            margin-left: -5px;
+            /*圆角*/
+            /*圆角*/
+            /*圆角*/
+            /*圆角*/
+            border-radius: 10px;
+        }
+        .choose_file{
+            height: 54px;
+            width:100px;
+            margin-top: 41px;
+            {#background-color: #6b370c;#}
+            border-width: 0px;
+            font-size: 20px;
+            color: white;
+            margin-left: -5px;
+            /*圆角*/
+            /*圆角*/
+            /*圆角*/
+            /*圆角*/
+            border-radius: 10px;
+        }
+        .selectdiv{
+            position: relative;
+            width: 200px;
+            height: 10px;
+            top: 200px;
+            left: 200px;
+        }
+        .pointerdiv{
+            position: absolute;
+            right: 970px;
+            top:250px;
+        }
+    </style>
+</head>
+<body>
+{#最外围的容器#}
+    <div id="container" style="width: 1920px">
+
+{#        头部#}
+        <div id="header" style="background-color: #acda8d">
+{#            头部标题，展示文字居中#}
+            <h1 style="margin-bottom: 0;text-align: center;">防脱发组 多面部情绪识别系统</h1>
+        </div>
+{#        预览窗口容器#}
+        <div id="preview" style="background-color: honeydew;width: 960px;height: 940px;float: left">
+            <h1 style="text-align: center;margin-top: 30px">PREVIEW </h1>
+            <img id='preview_image' src="{{ url_for('static', filename='./images/preview.jpg',_t=val1) }}" class="img" style="top:100px">
+
+            <div id="selectbuttom" class="selectdiv">
+                <form action="" enctype='multipart/form-data' method='POST'>
+                <input type="file" name="file" style="margin-top:20px;height:auto" class="choose_file"/>
+                <br>
+                <input type="submit" value="上传" class="input_out" onmousemove="this.className='input_move'" onmouseout="this.className='input_out'" style="margin-top:15px;"/>
+            </form>
+            </div>
+            <div class="pointerdiv">
+                <img src="static/images/pointer.png" style="width: 150px;height: auto">
+            </div>
+
+        </div>
+{#        结果容器，用于展示处理结果#}
+        <div id="result" style="background-color: #f0fff0;width: 960px;height: 940px;float: left">
+            <h1 style="text-align: center;margin-top: 30px">RESULT</h1>
+            <img id='result_image' src="{{ url_for('static', filename='./images/result.jpg') }} " class="img">
+
+        </div>
+
+        <div id="footer" style="background-color: #acda8d">
+
+            <h1 style="margin-top: 0;text-align: center;">防脱发 copyright</h1>
+        </div>
+    </div>
+</body>
+</html>
