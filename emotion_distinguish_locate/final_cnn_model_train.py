@@ -1,11 +1,11 @@
+# 最终确定的模型的训练
 import os
 import pathlib
 
 import joblib
 import tensorflow as tf
 
-MODEL_PATH = 'saves/cnn_distinguish.m'
-
+# 读取图片路径，生成图片名称集以及标签集
 print('开始读取图片路径')
 train_root_dir = '../dataset/train'
 test_root_dir = '../dataset/test'
@@ -22,6 +22,7 @@ print('训练路径读取完成')
 AUTOTUNE = tf.data.experimental.AUTOTUNE
 
 
+# 定义map所用的函数
 def get_image_by_filename(filename, label):
     print('aa')
     image_data = tf.io.read_file(filename)
@@ -32,6 +33,7 @@ def get_image_by_filename(filename, label):
     return image_scale, label
 
 
+# 生成训练集dataset
 tf_feature_filenames = tf.constant(all_image_filename)  # X_train
 tf_labels = tf.constant(all_image_lable_code)  # y_train
 dataset = tf.data.Dataset.from_tensor_slices((tf_feature_filenames, tf_labels))
@@ -43,11 +45,13 @@ num_epochs = 10  # 训练次数
 batch_size = 128  # 训练集分成的每批含有数量
 learning_rate = 0.001  # 学习率
 
+# 预处置
 print('预处置')
 dataset = dataset.shuffle(buffer_size=200000)
 dataset = dataset.batch(batch_size=batch_size)
 dataset = dataset.prefetch(AUTOTUNE)
 
+# 模型定义
 model = tf.keras.models.Sequential()
 # 第一段
 # 第一卷积层，64个大小为5×5的卷积核，步长1，激活函数relu，卷积模式same，输入张量的大小
@@ -72,6 +76,7 @@ model.add(tf.keras.layers.Dense(1024, activation='relu'))
 model.add(tf.keras.layers.Dropout(0.4))
 model.add(tf.keras.layers.Dense(512, activation='relu'))
 model.add(tf.keras.layers.Dense(7, activation='softmax'))  # 分类输出层
+# 模型训练
 model.summary()
 model.build()
 model.compile(
@@ -81,8 +86,5 @@ model.compile(
 )
 model.fit(dataset, epochs=num_epochs)
 # model.evaluate()
-'''
-几次运行结果：
-loss: 0.3049 - sparse_categorical_crossentropy: 0.3049
-'''
+# 模型保存
 model.save('model/cnn_model9')
