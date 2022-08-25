@@ -1,6 +1,6 @@
 # coding:utf-8
 
-from flask import Flask, render_template, request, redirect, url_for, make_response, jsonify
+from flask import Flask, render_template, request, redirect, url_for, make_response, jsonify, flash
 from werkzeug.utils import secure_filename
 import os
 import cv2
@@ -10,6 +10,7 @@ import flask
 from datetime import timedelta
 from image_handing import image_handing
 from multi_face_sign import solute
+
 # 设置允许的文件格式
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'JPG', 'PNG', 'bmp'])
 
@@ -28,40 +29,38 @@ def index():
     return render_template('index.html')
 
 
-# @app.route('/upload', methods=['POST', 'GET'])
 @app.route('/upload', methods=['POST', 'GET'])  # 添加路由
 def upload():
-    try:
-        if request.method == 'POST':
-            f = request.files['file']
+    if request.method == 'POST':
 
-            if not (f and allowed_file(f.filename)):
-                return render_template('upload.html')
-            user_input = request.form.get("name")
-            basepath = os.path.dirname(__file__)  # 当前文件所在路径
+        f = request.files['file']
 
-            upload_path = os.path.join(basepath, 'static/images', secure_filename(f.filename))  # 注意：没有的文件夹一定要先创建，不然会提示没有该路径
-            # upload_path = os.path.join(basepath, 'static/images','test.jpg')  #注意：没有的文件夹一定要先创建，不然会提示没有该路径
-            f.save(upload_path)
+        if not (f and allowed_file(f.filename)):
+            return render_template('upload.html')
+        user_input = request.form.get("name")
+        basepath = os.path.dirname(__file__)  # 当前文件所在路径
 
-            # 使用Opencv转换一下图片格式和名称
-            img = cv2.imread(upload_path)
-            cv2.imwrite(os.path.join(basepath, 'static/images', 'preview.jpg'), img)
+        upload_path = os.path.join(basepath, 'static/images',
+                                   secure_filename(f.filename))  # 注意：没有的文件夹一定要先创建，不然会提示没有该路径
+        # upload_path = os.path.join(basepath, 'static/images','test.jpg')  #注意：没有的文件夹一定要先创建，不然会提示没有该路径
+        f.save(upload_path)
 
-            img_1 = solute(img)
-            cv2.imwrite(os.path.join(basepath, 'static/images', 'result.jpg'), img_1)
+        # 使用Opencv转换一下图片格式和名称
+        img = cv2.imread(upload_path)
+        cv2.imwrite(os.path.join(basepath, 'static/images', 'preview.jpg'), img)
 
-            return render_template('upload_ok.html', userinput=user_input, val1=time.time())
+        img_1 = solute(img)
+        cv2.imwrite(os.path.join(basepath, 'static/images', 'result.jpg'), img_1)
 
-        return render_template('upload.html')
-    except:
-        flask("请检查上传的图片类型，仅限于png、PNG、jpg、JPG、bmp")
-        return render_template('upload.html')
+        return render_template('upload_ok.html', userinput=user_input, val1=time.time())
+
+    return render_template('upload.html')
 
 
-@app.route('/video',methods=['POST', 'GET'])
+@app.route('/video', methods=['POST', 'GET'])
 def video():
     if request.method == 'POST':
+
         upload_path_video = "F:/Dev/WorkSpace/PyCharm/Face_emotion_distinguish/Data/image.png"
         img = cv2.imread(upload_path_video)
         cv2.imwrite(os.path.join(os.path.dirname(__file__), 'static/images', 'image.jpg'), img)

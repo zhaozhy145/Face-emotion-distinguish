@@ -51,6 +51,12 @@
             left: 30px;
         }
     </style>
+    <script language="JavaScript">
+        function show_loading(){
+            document.getElementById('loading').style.display = 'block';
+        }
+
+    </script>
 </head>
 <body background="static/images/new_back.png"
       style=" background-repeat:no-repeat ;
@@ -67,7 +73,10 @@ background-attachment: fixed;"
         <form action="" enctype='multipart/form-data' method='POST'>
             <input type="file" name="file" style="margin-top:20px;height:auto" class="choose_file"/>
             <br>
-            <input type="submit" value="上传" class="input_out" onmousemove="this.className='input_move'" onmouseout="this.className='input_out'" style="margin-top:15px;"/>
+            <div align="center">
+                <img id="loading" src="static/images/loading.gif" style="display: none;" width="160px">
+            </div>
+            <input type="submit" value="上传" class="input_out" onmousemove="this.className='input_move'" onmouseout="this.className='input_out'" style="margin-top:15px;"onclick="show_loading()"/>
         </form>
     </div>
 

@@ -4,64 +4,73 @@
         <meta http-equiv="content-type" content="text/html; charset=utf-8">
         <meta name="generator" content="PSPad editor, www.pspad.com">
         <title></title>
+        <script language="JavaScript">
+            function show_loading(){
+                document.getElementById('loading').style.display = 'block';
+            }
+        </script>
     </head>
     <body>
 
     <video id="video" width="640" height="480" autoplay></video>
-    <button id="snap">Snap Photo</button>
-            <button id="save">Save Photo</button>
+
+    <button id="snap">拍一张</button>
+            <button id="save">保存图片</button>
+    <div align="center">
+        <img id="loading" src="static/images/loading.gif" style="display: none;" width="160px">
+    </div>
     <form method="post">
-            <button id="save">上传</button>
+            <button id="upload" onclick="show_loading()">上传</button>
     </form>
     <canvas id="canvas" width="640" height="480"></canvas>
 
     <script type="text/javascript">
 
-        // Grab elements, create settings, etc.
-        var video = document.getElementById('video');
+    // Grab elements, create settings, etc.
+    var video = document.getElementById('video');
 
-        // Get access to the camera!
-        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-            // Not adding `{ audio: true }` since we only want video now
-            navigator.mediaDevices.getUserMedia({video: true}).then(function (stream) {
-                //video.src = window.URL.createObjectURL(stream);
-                video.srcObject = stream;
-                video.play();
-            });
-        }
-
-
-        // Elements for taking the snapshot
-        var canvas = document.getElementById('canvas');
-        var context = canvas.getContext('2d');
-        var video = document.getElementById('video');
-
-        // Trigger photo take
-        document.getElementById("snap").addEventListener("click", function () {
-            context.drawImage(video, 0, 0, 640, 480);
+    // Get access to the camera!
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        // Not adding `{ audio: true }` since we only want video now
+        navigator.mediaDevices.getUserMedia({video: true}).then(function (stream) {
+            //video.src = window.URL.createObjectURL(stream);
+            video.srcObject = stream;
+            video.play();
         });
+    }
 
-        function saveAsLocalImage() {
-            var myCanvas = document.getElementById("canvas");
-            // here is the most important part because if you dont replace you will get a DOM 18 exception.
-            // var image = myCanvas.toDataURL("image/png").replace("image/png", "image/octet-stream;Content-Disposition: attachment;filename=foobar.png");
-            var image = myCanvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
-            // window.location.href = image; // it will save locally
-            // create temporary link
-            var tmpLink = document.createElement('a');
-            tmpLink.download = 'image.png'; // set the name of the download file
-            tmpLink.href = image;
 
-            // temporarily add link to body and initiate the download
-            document.body.appendChild(tmpLink);
-            tmpLink.click();
-            document.body.removeChild(tmpLink);
-        }
+    // Elements for taking the snapshot
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext('2d');
+    var video = document.getElementById('video');
 
-        // Trigger photo save
-        document.getElementById("save").addEventListener("click", function () {
-            saveAsLocalImage();
-        });
-    </script>
+    // Trigger photo take
+    document.getElementById("snap").addEventListener("click", function () {
+        context.drawImage(video, 0, 0, 640, 480);
+    });
+
+    function saveAsLocalImage() {
+        var myCanvas = document.getElementById("canvas");
+        // here is the most important part because if you dont replace you will get a DOM 18 exception.
+        // var image = myCanvas.toDataURL("image/png").replace("image/png", "image/octet-stream;Content-Disposition: attachment;filename=foobar.png");
+        var image = myCanvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+        // window.location.href = image; // it will save locally
+        // create temporary link
+        var tmpLink = document.createElement('a');
+        tmpLink.download = 'image.png'; // set the name of the download file
+        tmpLink.href = image;
+
+        // temporarily add link to body and initiate the download
+        document.body.appendChild(tmpLink);
+        tmpLink.click();
+        document.body.removeChild(tmpLink);
+    }
+
+    // Trigger photo save
+    document.getElementById("save").addEventListener("click", function () {
+        saveAsLocalImage();
+    });
+</script>
 </body>
 </html>
