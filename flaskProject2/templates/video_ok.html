@@ -20,7 +20,7 @@
         }
     </style>
         <style>
-        .input_out{
+        input_out{
             height: 54px;
             width:100px;
             margin-top: 41px;
@@ -35,7 +35,7 @@
             /*圆角*/
             border-radius: 10px;
         }
-        .input_move{
+        input_move{
             height: 54px;
             width:100px;
             margin-top: 41px;
@@ -50,7 +50,7 @@
             /*圆角*/
             border-radius: 10px;
         }
-        .choose_file{
+        choose_file{
             height: 54px;
             width:100px;
             margin-top: 41px;
@@ -65,7 +65,7 @@
             /*圆角*/
             border-radius: 10px;
         }
-        .selectdiv{
+        selectdiv{
             position: relative;
             width: 200px;
             height: 10px;
@@ -74,43 +74,27 @@
         }
         .pointerdiv{
             position: absolute;
-            right: 970px;
+            right: 1000px;
             top:250px;
-/*            align-items: center;*/
+
         }
     </style>
 </head>
 <body>
-
     <div id="container" style="width: 1920px">
-
-
         <div id="header" style="background-color: #acda8d">
-
             <h1 style="margin-bottom: 0;text-align: center;">防脱发组 多面部情绪识别系统</h1>
         </div>
-
         <div id="preview" style="background-color: honeydew;width: 960px;height: 940px;float: left">
             <h1 style="text-align: center;margin-top: 30px">PREVIEW </h1>
-            <img id='preview_image' src="{{ url_for('static', filename='./images/preview.jpg',_t=val1) }}" class="img_1">
-
-            <div id="selectbuttom" class="selectdiv">
-                <form action="" enctype='multipart/form-data' method='POST'>
-                <input type="file" name="file" style="margin-top:20px;height:auto" class="choose_file"/>
-                <br>
-                <input type="submit" value="上传" class="input_out" onmousemove="this.className='input_move'" onmouseout="this.className='input_out'" style="margin-top:15px;"/>
-            </form>
-            </div>
-
-
+            <img id='preview_image' src="{{ url_for('static', filename='./images/image.jpg',_t=val1) }}" class="img_1">
         </div>
         <div class="pointerdiv">
             <img src="static/images/pointer.png" style="width: 150px;height: auto">
         </div>
         <div id="result" style="background-color: #f0fff0;width: 960px;height: 940px;float: left">
             <h1 style="text-align: center;margin-top: 30px">RESULT</h1>
-            <img id='result_image' src="{{ url_for('static', filename='./images/result.jpg') }} " class="img">
-
+            <img id='result_image' src="{{ url_for('static', filename='./images/image_new.jpg') }} " class="img">
             <div id="back" class="selectdiv">
                 <p> <a href="{{ url_for('index') }}" rel="external nofollow" >返回导航页</a></p>
             </div>

@@ -6,11 +6,10 @@ import os
 import cv2
 import time
 import flask
-from multi_face_sign import solute
 
 from datetime import timedelta
 from image_handing import image_handing
-
+from multi_face_sign import solute
 # 设置允许的文件格式
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'JPG', 'PNG', 'bmp'])
 
@@ -24,16 +23,20 @@ app = Flask(__name__)
 app.send_file_max_age_default = timedelta(seconds=1)
 
 
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+
 # @app.route('/upload', methods=['POST', 'GET'])
-@app.route('/', methods=['POST', 'GET'])  # 添加路由
+@app.route('/upload', methods=['POST', 'GET'])  # 添加路由
 def upload():
     try:
         if request.method == 'POST':
             f = request.files['file']
 
-            #if not (f and allowed_file(f.filename)):
-                #flask("请检查上传的图片类型，仅限于png、PNG、jpg、JPG、bmp")
-                #return render_template('upload.html')
+            if not (f and allowed_file(f.filename)):
+                return render_template('upload.html')
             user_input = request.form.get("name")
             basepath = os.path.dirname(__file__)  # 当前文件所在路径
 
@@ -54,6 +57,20 @@ def upload():
     except:
         flask("请检查上传的图片类型，仅限于png、PNG、jpg、JPG、bmp")
         return render_template('upload.html')
+
+
+@app.route('/video',methods=['POST', 'GET'])
+def video():
+    if request.method == 'POST':
+        upload_path_video = "F:/Dev/WorkSpace/PyCharm/Face_emotion_distinguish/Data/image.png"
+        img = cv2.imread(upload_path_video)
+        cv2.imwrite(os.path.join(os.path.dirname(__file__), 'static/images', 'image.jpg'), img)
+
+        img_new = solute(img)
+        cv2.imwrite(os.path.join(os.path.dirname(__file__), 'static/images', 'image_new.jpg'), img_new)
+        return render_template('video_ok.html')
+    else:
+        return render_template('new.html')
 
 
 if __name__ == '__main__':
